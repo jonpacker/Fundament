@@ -53,6 +53,9 @@ static NSString* FundamentCreateUUID() {
 // Will load data sources from the default config file.
 - (id) initAsShared;
 
+// Data source creator for a JSON data source
+- (void) addJSONDataSource:(NSURL *)dataSource withResponseType:(FundamentResponseType)responseType;
+
 @end
 
 @implementation Fundament
@@ -112,7 +115,8 @@ static Fundament* sharedFundament = nil;
   FundamentLog(2, @"Application Did Enter Background");
 }
 
-#pragma mark - Data Sources - Generic
+#pragma mark - Data Sources
+#pragma mark Generic
 
 - (void) addDataSource:(FundamentDataSourceBlock)dataSource forKey:(NSString *)key {
   [_dataSources setObject:[[dataSource copy] autorelease] forKey:key];
@@ -124,11 +128,17 @@ static Fundament* sharedFundament = nil;
   return [uuid copy];
 }
 
-# pragma mark - Data Sources - Generic URL
+# pragma mark Generic URL
 
 - (void) addURLDataSource:(NSURL *)dataSource 
          withResponseType:(FundamentResponseType)responseType 
                    forKey:(NSString *)key {
+  
+}
+
+# pragma mark JSON
+
+- (void) addJSONDataSource:(NSURL *)dataSource withResponseType:(FundamentResponseType)responseType {
   
 }
 
