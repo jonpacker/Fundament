@@ -16,6 +16,7 @@
 		CCADF2A01485022300B20769 /* FViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCADF29F1485022300B20769 /* FViewController.m */; };
 		CCADF2A31485022300B20769 /* FViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCADF2A11485022300B20769 /* FViewController_iPhone.xib */; };
 		CCADF2A61485022300B20769 /* FViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCADF2A41485022300B20769 /* FViewController_iPad.xib */; };
+		CCADF2AF1485026C00B20769 /* Fundament.m in Sources */ = {isa = PBXBuildFile; fileRef = CCADF2AE1485026C00B20769 /* Fundament.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,16 +24,18 @@
 		CCADF28C1485022300B20769 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CCADF28E1485022300B20769 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CCADF2901485022300B20769 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		CCADF2941485022300B20769 /* Fundament-Info.plist */ = {isa = PBXFileReference; path = "Fundament-Info.plist"; sourceTree = "<group>"; };
+		CCADF2941485022300B20769 /* Fundament-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Fundament-Info.plist"; sourceTree = "<group>"; };
 		CCADF2961485022300B20769 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CCADF2981485022300B20769 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		CCADF29A1485022300B20769 /* Fundament-Prefix.pch */ = {isa = PBXFileReference; path = "Fundament-Prefix.pch"; sourceTree = "<group>"; };
-		CCADF29B1485022300B20769 /* FAppDelegate.h */ = {isa = PBXFileReference; path = FAppDelegate.h; sourceTree = "<group>"; };
+		CCADF29A1485022300B20769 /* Fundament-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fundament-Prefix.pch"; sourceTree = "<group>"; };
+		CCADF29B1485022300B20769 /* FAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FAppDelegate.h; sourceTree = "<group>"; };
 		CCADF29C1485022300B20769 /* FAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FAppDelegate.m; sourceTree = "<group>"; };
-		CCADF29E1485022300B20769 /* FViewController.h */ = {isa = PBXFileReference; path = FViewController.h; sourceTree = "<group>"; };
+		CCADF29E1485022300B20769 /* FViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FViewController.h; sourceTree = "<group>"; };
 		CCADF29F1485022300B20769 /* FViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FViewController.m; sourceTree = "<group>"; };
 		CCADF2A21485022300B20769 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FViewController_iPhone.xib; sourceTree = "<group>"; };
 		CCADF2A51485022300B20769 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FViewController_iPad.xib; sourceTree = "<group>"; };
+		CCADF2AD1485026C00B20769 /* Fundament.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Fundament.h; path = Fundament/Fundament/Fundament.h; sourceTree = "<group>"; };
+		CCADF2AE1485026C00B20769 /* Fundament.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Fundament.m; path = Fundament/Fundament/Fundament.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +55,9 @@
 		CCADF27D1485022300B20769 = {
 			isa = PBXGroup;
 			children = (
-				CCADF2921485022300B20769 /* Fundament */,
+				CCADF2B014850CD500B20769 /* Dependencies */,
+				CCADF2AC1485023700B20769 /* Fundament */,
+				CCADF2921485022300B20769 /* FundamentTest */,
 				CCADF28B1485022300B20769 /* Frameworks */,
 				CCADF2891485022300B20769 /* Products */,
 			);
@@ -76,7 +81,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		CCADF2921485022300B20769 /* Fundament */ = {
+		CCADF2921485022300B20769 /* FundamentTest */ = {
 			isa = PBXGroup;
 			children = (
 				CCADF29B1485022300B20769 /* FAppDelegate.h */,
@@ -87,6 +92,7 @@
 				CCADF2A41485022300B20769 /* FViewController_iPad.xib */,
 				CCADF2931485022300B20769 /* Supporting Files */,
 			);
+			name = FundamentTest;
 			path = Fundament;
 			sourceTree = "<group>";
 		};
@@ -99,6 +105,22 @@
 				CCADF29A1485022300B20769 /* Fundament-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CCADF2AC1485023700B20769 /* Fundament */ = {
+			isa = PBXGroup;
+			children = (
+				CCADF2AD1485026C00B20769 /* Fundament.h */,
+				CCADF2AE1485026C00B20769 /* Fundament.m */,
+			);
+			name = Fundament;
+			sourceTree = "<group>";
+		};
+		CCADF2B014850CD500B20769 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Dependencies;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -168,6 +190,7 @@
 				CCADF2991485022300B20769 /* main.m in Sources */,
 				CCADF29D1485022300B20769 /* FAppDelegate.m in Sources */,
 				CCADF2A01485022300B20769 /* FViewController.m in Sources */,
+				CCADF2AF1485026C00B20769 /* Fundament.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

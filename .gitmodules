@@ -1,0 +1,3 @@
+[submodule "Fundament/Dependencies/JSONKit"]
+	path = Fundament/Dependencies/JSONKit
+	url = https://github.com/johnezang/JSONKit.git
