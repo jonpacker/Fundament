@@ -1,0 +1,294 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CCADF28D1485022300B20769 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCADF28C1485022300B20769 /* UIKit.framework */; };
+		CCADF28F1485022300B20769 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCADF28E1485022300B20769 /* Foundation.framework */; };
+		CCADF2911485022300B20769 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCADF2901485022300B20769 /* CoreGraphics.framework */; };
+		CCADF2971485022300B20769 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CCADF2951485022300B20769 /* InfoPlist.strings */; };
+		CCADF2991485022300B20769 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CCADF2981485022300B20769 /* main.m */; };
+		CCADF29D1485022300B20769 /* FAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCADF29C1485022300B20769 /* FAppDelegate.m */; };
+		CCADF2A01485022300B20769 /* FViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCADF29F1485022300B20769 /* FViewController.m */; };
+		CCADF2A31485022300B20769 /* FViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCADF2A11485022300B20769 /* FViewController_iPhone.xib */; };
+		CCADF2A61485022300B20769 /* FViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCADF2A41485022300B20769 /* FViewController_iPad.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		CCADF2881485022300B20769 /* Fundament.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fundament.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CCADF28C1485022300B20769 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		CCADF28E1485022300B20769 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		CCADF2901485022300B20769 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		CCADF2941485022300B20769 /* Fundament-Info.plist */ = {isa = PBXFileReference; path = "Fundament-Info.plist"; sourceTree = "<group>"; };
+		CCADF2961485022300B20769 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CCADF2981485022300B20769 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CCADF29A1485022300B20769 /* Fundament-Prefix.pch */ = {isa = PBXFileReference; path = "Fundament-Prefix.pch"; sourceTree = "<group>"; };
+		CCADF29B1485022300B20769 /* FAppDelegate.h */ = {isa = PBXFileReference; path = FAppDelegate.h; sourceTree = "<group>"; };
+		CCADF29C1485022300B20769 /* FAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FAppDelegate.m; sourceTree = "<group>"; };
+		CCADF29E1485022300B20769 /* FViewController.h */ = {isa = PBXFileReference; path = FViewController.h; sourceTree = "<group>"; };
+		CCADF29F1485022300B20769 /* FViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FViewController.m; sourceTree = "<group>"; };
+		CCADF2A21485022300B20769 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FViewController_iPhone.xib; sourceTree = "<group>"; };
+		CCADF2A51485022300B20769 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FViewController_iPad.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CCADF2851485022300B20769 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCADF28D1485022300B20769 /* UIKit.framework in Frameworks */,
+				CCADF28F1485022300B20769 /* Foundation.framework in Frameworks */,
+				CCADF2911485022300B20769 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CCADF27D1485022300B20769 = {
+			isa = PBXGroup;
+			children = (
+				CCADF2921485022300B20769 /* Fundament */,
+				CCADF28B1485022300B20769 /* Frameworks */,
+				CCADF2891485022300B20769 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CCADF2891485022300B20769 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CCADF2881485022300B20769 /* Fundament.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CCADF28B1485022300B20769 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CCADF28C1485022300B20769 /* UIKit.framework */,
+				CCADF28E1485022300B20769 /* Foundation.framework */,
+				CCADF2901485022300B20769 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CCADF2921485022300B20769 /* Fundament */ = {
+			isa = PBXGroup;
+			children = (
+				CCADF29B1485022300B20769 /* FAppDelegate.h */,
+				CCADF29C1485022300B20769 /* FAppDelegate.m */,
+				CCADF29E1485022300B20769 /* FViewController.h */,
+				CCADF29F1485022300B20769 /* FViewController.m */,
+				CCADF2A11485022300B20769 /* FViewController_iPhone.xib */,
+				CCADF2A41485022300B20769 /* FViewController_iPad.xib */,
+				CCADF2931485022300B20769 /* Supporting Files */,
+			);
+			path = Fundament;
+			sourceTree = "<group>";
+		};
+		CCADF2931485022300B20769 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CCADF2941485022300B20769 /* Fundament-Info.plist */,
+				CCADF2951485022300B20769 /* InfoPlist.strings */,
+				CCADF2981485022300B20769 /* main.m */,
+				CCADF29A1485022300B20769 /* Fundament-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CCADF2871485022300B20769 /* Fundament */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CCADF2A91485022300B20769 /* Build configuration list for PBXNativeTarget "Fundament" */;
+			buildPhases = (
+				CCADF2841485022300B20769 /* Sources */,
+				CCADF2851485022300B20769 /* Frameworks */,
+				CCADF2861485022300B20769 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Fundament;
+			productName = Fundament;
+			productReference = CCADF2881485022300B20769 /* Fundament.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CCADF27F1485022300B20769 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Creative Intersection";
+			};
+			buildConfigurationList = CCADF2821485022300B20769 /* Build configuration list for PBXProject "Fundament" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = CCADF27D1485022300B20769;
+			productRefGroup = CCADF2891485022300B20769 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CCADF2871485022300B20769 /* Fundament */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CCADF2861485022300B20769 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCADF2971485022300B20769 /* InfoPlist.strings in Resources */,
+				CCADF2A31485022300B20769 /* FViewController_iPhone.xib in Resources */,
+				CCADF2A61485022300B20769 /* FViewController_iPad.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CCADF2841485022300B20769 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCADF2991485022300B20769 /* main.m in Sources */,
+				CCADF29D1485022300B20769 /* FAppDelegate.m in Sources */,
+				CCADF2A01485022300B20769 /* FViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CCADF2951485022300B20769 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CCADF2961485022300B20769 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		CCADF2A11485022300B20769 /* FViewController_iPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CCADF2A21485022300B20769 /* en */,
+			);
+			name = FViewController_iPhone.xib;
+			sourceTree = "<group>";
+		};
+		CCADF2A41485022300B20769 /* FViewController_iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CCADF2A51485022300B20769 /* en */,
+			);
+			name = FViewController_iPad.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CCADF2A71485022300B20769 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CCADF2A81485022300B20769 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CCADF2AA1485022300B20769 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Fundament/Fundament-Prefix.pch";
+				INFOPLIST_FILE = "Fundament/Fundament-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		CCADF2AB1485022300B20769 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Fundament/Fundament-Prefix.pch";
+				INFOPLIST_FILE = "Fundament/Fundament-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CCADF2821485022300B20769 /* Build configuration list for PBXProject "Fundament" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCADF2A71485022300B20769 /* Debug */,
+				CCADF2A81485022300B20769 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CCADF2A91485022300B20769 /* Build configuration list for PBXNativeTarget "Fundament" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCADF2AA1485022300B20769 /* Debug */,
+				CCADF2AB1485022300B20769 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CCADF27F1485022300B20769 /* Project object */;
+}
