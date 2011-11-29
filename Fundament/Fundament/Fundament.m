@@ -6,6 +6,7 @@
 //
 
 #import "Fundament.h"
+#import "JSONKit.h"
 
 #pragma mark - Logging
 

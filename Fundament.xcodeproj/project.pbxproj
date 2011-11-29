@@ -17,6 +17,9 @@
 		CCADF2A31485022300B20769 /* FViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCADF2A11485022300B20769 /* FViewController_iPhone.xib */; };
 		CCADF2A61485022300B20769 /* FViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCADF2A41485022300B20769 /* FViewController_iPad.xib */; };
 		CCADF2AF1485026C00B20769 /* Fundament.m in Sources */ = {isa = PBXBuildFile; fileRef = CCADF2AE1485026C00B20769 /* Fundament.m */; };
+		CCADF2B614850E3F00B20769 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = CCADF2B214850E3F00B20769 /* CHANGELOG.md */; };
+		CCADF2B714850E3F00B20769 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = CCADF2B414850E3F00B20769 /* JSONKit.m */; };
+		CCADF2B814850E3F00B20769 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CCADF2B514850E3F00B20769 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +39,10 @@
 		CCADF2A51485022300B20769 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FViewController_iPad.xib; sourceTree = "<group>"; };
 		CCADF2AD1485026C00B20769 /* Fundament.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Fundament.h; path = Fundament/Fundament/Fundament.h; sourceTree = "<group>"; };
 		CCADF2AE1485026C00B20769 /* Fundament.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Fundament.m; path = Fundament/Fundament/Fundament.m; sourceTree = "<group>"; };
+		CCADF2B214850E3F00B20769 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.md; sourceTree = "<group>"; };
+		CCADF2B314850E3F00B20769 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		CCADF2B414850E3F00B20769 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		CCADF2B514850E3F00B20769 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,8 +126,21 @@
 		CCADF2B014850CD500B20769 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				CCADF2B114850E3F00B20769 /* JSONKit */,
 			);
 			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		CCADF2B114850E3F00B20769 /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
+				CCADF2B214850E3F00B20769 /* CHANGELOG.md */,
+				CCADF2B314850E3F00B20769 /* JSONKit.h */,
+				CCADF2B414850E3F00B20769 /* JSONKit.m */,
+				CCADF2B514850E3F00B20769 /* README.md */,
+			);
+			name = JSONKit;
+			path = Fundament/Dependencies/JSONKit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,6 +197,8 @@
 				CCADF2971485022300B20769 /* InfoPlist.strings in Resources */,
 				CCADF2A31485022300B20769 /* FViewController_iPhone.xib in Resources */,
 				CCADF2A61485022300B20769 /* FViewController_iPad.xib in Resources */,
+				CCADF2B614850E3F00B20769 /* CHANGELOG.md in Resources */,
+				CCADF2B814850E3F00B20769 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,6 +213,7 @@
 				CCADF29D1485022300B20769 /* FAppDelegate.m in Sources */,
 				CCADF2A01485022300B20769 /* FViewController.m in Sources */,
 				CCADF2AF1485026C00B20769 /* Fundament.m in Sources */,
+				CCADF2B714850E3F00B20769 /* JSONKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
