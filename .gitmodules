@@ -1,3 +1,6 @@
 [submodule "Fundament/Dependencies/JSONKit"]
 	path = Fundament/Dependencies/JSONKit
 	url = https://github.com/johnezang/JSONKit.git
+[submodule "Fundament/Dependencies/ASIHttpRequest"]
+	path = Fundament/Dependencies/ASIHttpRequest
+	url = https://github.com/pokeb/asi-http-request.git
