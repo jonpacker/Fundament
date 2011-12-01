@@ -120,7 +120,7 @@ static NSString* FundamentCreateUUID() {
 - (BOOL) removeObserver:(NSString *)observerId dryRun:(BOOL)dryRun;
 
 // Get a mutable array of listeners for the given key
-- (NSMutableDictionary *) listenersForKey:(NSString *)key;
+- (NSMutableDictionary *) observersForKey:(NSString *)key;
 
 // Master listener adder
 - (NSString *) addObserverForKey:(NSString *)key 
@@ -283,7 +283,7 @@ static Fundament* sharedFundament = nil;
   // If there's a conflict, remove it (or, if the user doesn't want to overwrite, return)
   if ([self removeObserver:finalObserverId dryRun:!overwriting]) return nil;
   
-  NSMutableDictionary* keyListeners = [self listenersForKey:key];
+  NSMutableDictionary* keyListeners = [self observersForKey:key];
   [keyListeners setObject:listener forKey:finalObserverId];
   
   return finalObserverId;

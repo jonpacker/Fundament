@@ -25,18 +25,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  
-  /*
-  
-  [Fundament sharedFundament];
-  [[Fundament sharedFundament] addDataSource:^(FundamentSuccessBlock s){
+  [$Fundament addDataSource:^(FundamentSuccessBlock s){
     NSLog(@"datasource called");
     s(@"<Data>");
   } withUpdateInterval:10 forKey:@"dskey"];
-  [[Fundament sharedFundament] addListenerWithBlock:^(id data) {
+  [$Fundament addObserverForKey:@"dskey" withBlock:^(id data) {
     NSLog(@"Listener called with data - %@", data);
-  } forKey:@"dskey"];
-*/
+  }];
   
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
