@@ -277,7 +277,6 @@ static Fundament* sharedFundament = nil;
                       observerId:(NSString *)observerId 
                  withNamespacing:(BOOL)namespacing 
                      overwriting:(BOOL)overwriting {
-  
   NSString* finalObserverId = !namespacing ? [key stringByAppendingString:observerId] : observerId;
   
   // If there's a conflict, remove it (or, if the user doesn't want to overwrite, return)
