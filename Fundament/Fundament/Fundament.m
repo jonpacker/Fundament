@@ -115,6 +115,20 @@ static NSString* FundamentCreateUUID() {
 // Return that status for a certain data source
 - (FundamentTimerStatus) statusForDataSourceWithKey:(NSString *)key;
 
+// Allows dry runs of observer removal. If the object is found, and dryRun = YES, it is not removed and YES is returned.
+// otherwise NO is returned.
+- (BOOL) removeObserver:(NSString *)observerId dryRun:(BOOL)dryRun;
+
+// Get a mutable array of listeners for the given key
+- (NSMutableDictionary *) listenersForKey:(NSString *)key;
+
+// Master listener adder
+- (NSString *) addObserverForKey:(NSString *)key 
+           withFundamentListener:(FundamentListener *)listener 
+                      observerId:(NSString *)observerId 
+                 withNamespacing:(BOOL)namespacing 
+                     overwriting:(BOOL)overwriting;
+
 @end
 
 @implementation Fundament
@@ -144,6 +158,16 @@ static Fundament* sharedFundament = nil;
   
   _timers         = [[NSMutableDictionary alloc] init],
   _dataCache      = [[NSCache alloc] init];
+  
+  return self;
+}
+
+- (id) initAsShared {
+  if ( !(self = [self init]) ) {
+    return nil;
+  }
+  
+  // TODO  ---  load json defaults
   
   return self;
 }
@@ -198,7 +222,7 @@ static Fundament* sharedFundament = nil;
   NSMutableDictionary* userInfo = [NSMutableDictionary dictionary];
   
   [userInfo setObject:[[dataSource copy] autorelease] forKey:FundamentDataSourceKey];
-  [userInfo setObject:[NSMutableArray array] forKey:FundamentListenersKey];
+  [userInfo setObject:[NSMutableDictionary dictionary] forKey:FundamentListenersKey];
   [userInfo setObject:[NSNumber numberWithInt:FundamentTimerStatusIdle] forKey:FundamentStatusKey];
   [userInfo setObject:[key copy] forKey:FundamentKeyKey];
   
@@ -215,8 +239,8 @@ static Fundament* sharedFundament = nil;
   
   FundamentDataSourceBlock dataSource = [info objectForKey:FundamentDataSourceKey];
   FundamentSuccessBlock success = ^(id data) {
-    NSArray* listeners = [info objectForKey:FundamentListenersKey];
-    for (FundamentListener* listener in listeners) {
+    NSDictionary* listeners = [info objectForKey:FundamentListenersKey];
+    for (FundamentListener* listener in listeners.allValues) {
       [listener callWithData:data];
     }
     
@@ -228,15 +252,170 @@ static Fundament* sharedFundament = nil;
 
 #pragma mark - Listeners
 
-//TODO - these will have to return some kind of opaque object. no other way for the user to remove them
-- (void) addListenerWithBlock:(FundamentCallback)listener forKey:(NSString *)key {
-  NSMutableArray* listeners = [[self infoForDataSourceWithKey:key] objectForKey:FundamentListenersKey];
-  [listeners addObject:[[[FundamentBlockListener alloc] initWithBlock:listener] autorelease]];
+- (NSMutableDictionary *) observersForKey:(NSString *)key {
+  return [[self infoForDataSourceWithKey:key] objectForKey:FundamentListenersKey];
 }
 
-- (void) addListenerWithTarget:(id)target selector:(SEL)selector forKey:(NSString *)key {
-  NSMutableArray* listeners = [[self infoForDataSourceWithKey:key] objectForKey:FundamentListenersKey];
-  [listeners addObject:[[[FundamentTargetSelListener alloc] initWithTarget:target selector:selector] autorelease]];
+- (BOOL) removeObserver:(NSString *)observerId dryRun:(BOOL)dryRun {
+  for (NSString* dataSourceKey in _timers.allKeys) {
+    NSMutableDictionary* observers = [self observersForKey:dataSourceKey];
+    if (![observers objectForKey:observerId]) continue;
+    if (dryRun) return YES;
+    
+    [observers removeObjectForKey:observerId]; break;
+  }
+  return NO;
+}
+
+- (void) removeObserver:(NSString *)observerId {
+  [self removeObserver:observerId dryRun:NO];
+}
+
+// Master listener adder
+- (NSString *) addObserverForKey:(NSString *)key 
+           withFundamentListener:(FundamentListener *)listener 
+                      observerId:(NSString *)observerId 
+                 withNamespacing:(BOOL)namespacing 
+                     overwriting:(BOOL)overwriting {
+  
+  NSString* finalObserverId = !namespacing ? [key stringByAppendingString:observerId] : observerId;
+  
+  // If there's a conflict, remove it (or, if the user doesn't want to overwrite, return)
+  if ([self removeObserver:finalObserverId dryRun:!overwriting]) return nil;
+  
+  NSMutableDictionary* keyListeners = [self listenersForKey:key];
+  [keyListeners setObject:listener forKey:finalObserverId];
+  
+  return finalObserverId;
+}
+
+
+- (NSString *) addObserverForKey:(NSString *)key withBlock:(FundamentCallback)block {
+  NSString* observerId = nil;
+  if (_descriptiveListenerIds) {
+    // Interpolation strategy - numbered blocks within the given key. So, like Key.Block1, Key.Block2. Not much else we 
+    // can use to identify a block.
+    NSDictionary* currentObservers = [self observersForKey:key];
+    NSInteger numberOfBlockObservers = 0;
+    
+    for (FundamentListener* listener in currentObservers.allValues) {
+      if ([listener isKindOfClass:FundamentBlockListener.class]) ++numberOfBlockObservers;
+    }
+    
+    observerId = [NSString stringWithFormat:@"Block%d", numberOfBlockObservers];
+  } else {
+    observerId = FundamentCreateUUID();
+  }
+  
+  // Since these are the most likely to be used we won't send them through the indirection of the other variants.
+  FundamentListener* observer = [[FundamentBlockListener alloc] initWithBlock:block];
+  NSString* finalId = [self addObserverForKey:key 
+                        withFundamentListener:observer
+                                   observerId:observerId 
+                              withNamespacing:YES 
+                                  overwriting:YES];
+  [observer release];
+  
+  return finalId;
+}
+
+- (NSString *) addObserverForKey:(NSString *)key withTarget:(id)target selector:(SEL)selector {
+  NSString* observerId = nil;
+  if (_descriptiveListenerIds) {
+    // Interpolation strategy - use NSStringFromClass + NSStringFromSelector + Numbering
+    NSDictionary* currentObservers = [self observersForKey:key];
+    NSInteger numberOfSimilarObservers = 0;
+    
+    for (FundamentTargetSelListener* listener in currentObservers.allValues) {
+      if (![listener isKindOfClass:FundamentTargetSelListener.class]) continue;
+      if ([listener.target class] != [target class]) continue;
+      if (listener.selector == selector) ++numberOfSimilarObservers;
+    }
+    
+    observerId = [NSString stringWithFormat:@"%@_%@_%d", NSStringFromClass([target class]), 
+                  NSStringFromSelector(selector), numberOfSimilarObservers];
+  } else {
+    observerId = FundamentCreateUUID();
+  }
+  
+  FundamentListener* observer = [[FundamentTargetSelListener alloc] initWithTarget:target selector:selector];
+  NSString* finalId = [self addObserverForKey:key 
+                        withFundamentListener:observer
+                                   observerId:observerId 
+                              withNamespacing:YES 
+                                  overwriting:YES];
+  [observer release];
+  
+  return finalId;
+}
+
+// User specified IDs
+- (NSString *) addObserverForKey:(NSString *)key 
+                       withBlock:(FundamentCallback)observer 
+                      observerId:(NSString *)observerId {
+  return [self addObserverForKey:key withBlock:observer observerId:observerId withNamespacing:YES];
+}
+- (NSString *) addObserverForKey:(NSString *)key 
+                      withTarget:(id)target 
+                        selector:(SEL)selector 
+                      observerId:(NSString *)observerId {
+  return [self addObserverForKey:key withTarget:target selector:selector observerId:observerId withNamespacing:YES];
+}
+
+// User specified IDs, namespacing optional
+- (NSString *) addObserverForKey:(NSString *)key 
+                       withBlock:(FundamentCallback)observer 
+                      observerId:(NSString *)observerId 
+                 withNamespacing:(BOOL)namespacing {
+  return [self addObserverForKey:key 
+                       withBlock:observer 
+                      observerId:observerId 
+                 withNamespacing:namespacing 
+                     overwriting:YES];
+}
+
+- (NSString *) addObserverForKey:(NSString *)key 
+                      withTarget:(id)target 
+                        selector:(SEL)selector 
+                      observerId:(NSString *)observerId 
+                 withNamespacing:(BOOL)namespacing {
+  return [self addObserverForKey:key 
+                      withTarget:target 
+                        selector:selector 
+                      observerId:observerId 
+                 withNamespacing:namespacing 
+                     overwriting:YES];
+}
+
+// User specified IDs, namespacing optional, overwriting optional
+- (NSString *) addObserverForKey:(NSString *)key 
+                       withBlock:(FundamentCallback)block
+                      observerId:(NSString *)observerId 
+                 withNamespacing:(BOOL)namespacing 
+                     overwriting:(BOOL)overwriting {
+  FundamentListener* observer = [[FundamentBlockListener alloc] initWithBlock:block];
+  NSString* finalId = [self addObserverForKey:key 
+                        withFundamentListener:observer 
+                                   observerId:observerId 
+                              withNamespacing:namespacing 
+                                  overwriting:overwriting];
+  [observer release];
+  return finalId;
+}
+- (NSString *) addObserverForKey:(NSString *)key 
+                      withTarget:(id)target 
+                        selector:(SEL)selector 
+                      observerId:(NSString *)observerId 
+                 withNamespacing:(BOOL)namespacing 
+                     overwriting:(BOOL)overwriting {
+  FundamentListener* observer = [[FundamentTargetSelListener alloc] initWithTarget:target selector:selector];
+  NSString* finalId = [self addObserverForKey:key 
+                        withFundamentListener:observer 
+                                   observerId:observerId 
+                              withNamespacing:namespacing 
+                                  overwriting:overwriting];
+  [observer release];
+  return finalId;
 }
 
 #pragma mark - Data Sources

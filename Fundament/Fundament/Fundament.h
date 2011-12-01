@@ -8,6 +8,12 @@
 #import <Foundation/Foundation.h>
 
 /**
+ * A macro to use for convenience rather than having to use the rather long winded [Fundament sharedFundament] every
+ * time you want to access the default singleton.
+ */
+#define $Fundament [Fundament sharedFundament]
+
+/**
  * The default update duration (in seconds). If you don't specify an update duration, this fallback will be used. Note
  * that this is the fallback for the instance property defaultUpdateDuration. If you don't set that, that is when this 
  * value will be used. If you set it, it will override this.
@@ -58,6 +64,12 @@ typedef enum {
 } FundamentTimerStatus;
 
 @interface Fundament : NSObject {
+ @public 
+  // Whether descriptive names are attempted for listener IDs interpolation
+  // _descriptiveListenerIds = YES: "DataSourceKey.DataTableViewController_updateData:"
+  // _descriptiveListenerIds =  NO: "DataSourceKey.550e8400-e29b-41d4-a716-446655440000"
+  BOOL _descriptiveListenerIds;
+  
  @protected
   // Timers are stored in here. Blocks, listeners and statuses are stored in their userInfo.
   NSMutableDictionary* _timers;
@@ -109,10 +121,77 @@ typedef enum {
 // identifiers that you will retrieve and observe the data with.
 - (void) addURLDataSourcesWithDictionary:(NSDictionary *)dictionary;
 
-// Add a listener for the given key using a block
-- (void) addListenerWithBlock:(FundamentCallback)listener forKey:(NSString *)key;
+// Event listeners! These observers will be called each time their corresponding dataSource is updated. An ID is
+// returned that is needed to remove block listeners (but can be also used for target/sel if you want). 
+//
+// The easiest thing to do with IDs is to ignore them completely and only use the returned IDs as a way to remove a 
+// observer. If you want to do that, you don't need to read the next two paragraphs.
+//
+// You can specify your own ID if you like, but note that it will be namespaced in front of the data source's key. That 
+// means if you pass an ID 'myDataTable' to a listener for data source with key 'dataTableSource', your resulting key 
+// will be: 'dataTableSource.myDataTable'. You can override namespace by calling the variant with 'withNamespacing' in
+// the signature - but note that this will overwrite any other listener in this Fundament instance with the same ID.
+//
+// ID's are also useful in overwriting old listeners. If you add a new listener for a data source with the same key as
+// the old one, the old one will first be removed before the new one is added. You can override this by calling the
+// variant with 'overwriting' in the signature. If overwriting is turned off and you try to add a listener with the same
+// name, no action will be taken and the listener will not be added (you kind of have to back yourself into a corner for
+// this case to occur). If that conflict happens, nil will be returned.
+//
+// An example of adding a listener might be:
+//
+// NSString* listenerId = [$Fundament addListenerWithTarget:self 
+//                                                 selector:@selector(dataUpdated:) 
+//                                                   forKey:@"DataSourceKey"];
+//
+// You might store 'listener' as an instance variable. Then, later, when you want to remove it, you would do:
+//
+// [$Fundament removeListener:listenerId]
+//
+// Because the ID is namespaced, this will always find the correct listener
+//
+// These methods all perform a similar purpose, with different idioms and nomenclature. Their effect is the same though
+// so they only need to be documented once.
 
-// Add a listener for the given key using a target & selector
-- (void) addListenerWithTarget:(id)target selector:(SEL)selector forKey:(NSString *)key;
+// Default selectors, easiest to use. Generates a unique ID manually.
+- (NSString *) addObserverForKey:(NSString *)key withBlock:(FundamentCallback)observer;
+- (NSString *) addObserverForKey:(NSString *)key withTarget:(id)target selector:(SEL)selector;
+
+// User specified IDs
+- (NSString *) addObserverForKey:(NSString *)key 
+                       withBlock:(FundamentCallback)observer 
+                      observerId:(NSString *)observerId;
+- (NSString *) addObserverForKey:(NSString *)key 
+                      withTarget:(id)target 
+                        selector:(SEL)selector 
+                      observerId:(NSString *)observerId;
+
+// User specified IDs, namespacing optional
+- (NSString *) addObserverForKey:(NSString *)key 
+                       withBlock:(FundamentCallback)observer 
+                      observerId:(NSString *)observerId 
+                 withNamespacing:(BOOL)namespacing;
+- (NSString *) addObserverForKey:(NSString *)key 
+                      withTarget:(id)target 
+                        selector:(SEL)selector 
+                      observerId:(NSString *)observerId 
+                 withNamespacing:(BOOL)namespacing;
+
+// User specified IDs, namespacing optional, overwriting optional
+- (NSString *) addObserverForKey:(NSString *)key 
+                       withBlock:(FundamentCallback)observer 
+                      observerId:(NSString *)observerId 
+                 withNamespacing:(BOOL)namespacing 
+                     overwriting:(BOOL)overwriting;
+- (NSString *) addObserverForKey:(NSString *)key 
+                      withTarget:(id)target 
+                        selector:(SEL)selector 
+                      observerId:(NSString *)observerId 
+                 withNamespacing:(BOOL)namespacing 
+                     overwriting:(BOOL)overwriting;
+
+// Observer removal. Much simpler!
+- (void) removeObserver:(NSString *)observerId;
+
 
 @end

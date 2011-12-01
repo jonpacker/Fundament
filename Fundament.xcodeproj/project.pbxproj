@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC3C4AD01487A4F9007FF6BA /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC3C4ACF1487A4F9007FF6BA /* CFNetwork.framework */; };
+		CC3C4AD21487A503007FF6BA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC3C4AD11487A503007FF6BA /* SystemConfiguration.framework */; };
+		CC3C4AD41487A50A007FF6BA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC3C4AD31487A50A007FF6BA /* MobileCoreServices.framework */; };
+		CC3C4AD61487A51C007FF6BA /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC3C4AD51487A51C007FF6BA /* libz.1.2.5.dylib */; };
+		CC3C4AD71487A52B007FF6BA /* libxml2.2.7.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC3C4ACC1487A4D5007FF6BA /* libxml2.2.7.3.dylib */; };
 		CC6A191714866DCD006FFCF5 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6A190114866DCD006FFCF5 /* ASIAuthenticationDialog.m */; };
 		CC6A191814866DCD006FFCF5 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6A190414866DCD006FFCF5 /* ASIDataCompressor.m */; };
 		CC6A191914866DCD006FFCF5 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6A190614866DCD006FFCF5 /* ASIDataDecompressor.m */; };
@@ -15,7 +20,6 @@
 		CC6A191C14866DCD006FFCF5 /* ASIHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6A190C14866DCD006FFCF5 /* ASIHTTPRequest.m */; };
 		CC6A191D14866DCD006FFCF5 /* ASIInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6A191014866DCD006FFCF5 /* ASIInputStream.m */; };
 		CC6A191E14866DCD006FFCF5 /* ASINetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6A191214866DCD006FFCF5 /* ASINetworkQueue.m */; };
-		CC6A191F14866DCD006FFCF5 /* ASIWebPageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6A191614866DCD006FFCF5 /* ASIWebPageRequest.m */; };
 		CC6A192314866DF0006FFCF5 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6A192214866DF0006FFCF5 /* Reachability.m */; };
 		CCADF28D1485022300B20769 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCADF28C1485022300B20769 /* UIKit.framework */; };
 		CCADF28F1485022300B20769 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCADF28E1485022300B20769 /* Foundation.framework */; };
@@ -33,6 +37,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CC3C4ACC1487A4D5007FF6BA /* libxml2.2.7.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.7.3.dylib; path = usr/lib/libxml2.2.7.3.dylib; sourceTree = SDKROOT; };
+		CC3C4ACF1487A4F9007FF6BA /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		CC3C4AD11487A503007FF6BA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		CC3C4AD31487A50A007FF6BA /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		CC3C4AD51487A51C007FF6BA /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		CC6A190014866DCD006FFCF5 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIAuthenticationDialog.h; path = Fundament/Dependencies/ASIHttpRequest/Classes/ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		CC6A190114866DCD006FFCF5 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASIAuthenticationDialog.m; path = Fundament/Dependencies/ASIHttpRequest/Classes/ASIAuthenticationDialog.m; sourceTree = "<group>"; };
 		CC6A190214866DCD006FFCF5 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASICacheDelegate.h; path = Fundament/Dependencies/ASIHttpRequest/Classes/ASICacheDelegate.h; sourceTree = "<group>"; };
@@ -53,8 +62,6 @@
 		CC6A191114866DCD006FFCF5 /* ASINetworkQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASINetworkQueue.h; path = Fundament/Dependencies/ASIHttpRequest/Classes/ASINetworkQueue.h; sourceTree = "<group>"; };
 		CC6A191214866DCD006FFCF5 /* ASINetworkQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASINetworkQueue.m; path = Fundament/Dependencies/ASIHttpRequest/Classes/ASINetworkQueue.m; sourceTree = "<group>"; };
 		CC6A191314866DCD006FFCF5 /* ASIProgressDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIProgressDelegate.h; path = Fundament/Dependencies/ASIHttpRequest/Classes/ASIProgressDelegate.h; sourceTree = "<group>"; };
-		CC6A191514866DCD006FFCF5 /* ASIWebPageRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIWebPageRequest.h; sourceTree = "<group>"; };
-		CC6A191614866DCD006FFCF5 /* ASIWebPageRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIWebPageRequest.m; sourceTree = "<group>"; };
 		CC6A192114866DF0006FFCF5 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Fundament/Dependencies/ASIHttpRequest/External/Reachability/Reachability.h; sourceTree = "<group>"; };
 		CC6A192214866DF0006FFCF5 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Fundament/Dependencies/ASIHttpRequest/External/Reachability/Reachability.m; sourceTree = "<group>"; };
 		CCADF2881485022300B20769 /* Fundament.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fundament.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -84,9 +91,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC3C4AD71487A52B007FF6BA /* libxml2.2.7.3.dylib in Frameworks */,
+				CC3C4AD61487A51C007FF6BA /* libz.1.2.5.dylib in Frameworks */,
+				CCADF2911485022300B20769 /* CoreGraphics.framework in Frameworks */,
+				CC3C4AD41487A50A007FF6BA /* MobileCoreServices.framework in Frameworks */,
+				CC3C4AD21487A503007FF6BA /* SystemConfiguration.framework in Frameworks */,
+				CC3C4AD01487A4F9007FF6BA /* CFNetwork.framework in Frameworks */,
 				CCADF28D1485022300B20769 /* UIKit.framework in Frameworks */,
 				CCADF28F1485022300B20769 /* Foundation.framework in Frameworks */,
-				CCADF2911485022300B20769 /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,19 +129,8 @@
 				CC6A191214866DCD006FFCF5 /* ASINetworkQueue.m */,
 				CC6A191314866DCD006FFCF5 /* ASIProgressDelegate.h */,
 				CC6A192014866DDF006FFCF5 /* Reachability */,
-				CC6A191414866DCD006FFCF5 /* ASIWebPageRequest */,
 			);
 			name = ASIHTTPRequest;
-			sourceTree = "<group>";
-		};
-		CC6A191414866DCD006FFCF5 /* ASIWebPageRequest */ = {
-			isa = PBXGroup;
-			children = (
-				CC6A191514866DCD006FFCF5 /* ASIWebPageRequest.h */,
-				CC6A191614866DCD006FFCF5 /* ASIWebPageRequest.m */,
-			);
-			name = ASIWebPageRequest;
-			path = Fundament/Dependencies/ASIHttpRequest/Classes/ASIWebPageRequest;
 			sourceTree = "<group>";
 		};
 		CC6A192014866DDF006FFCF5 /* Reachability */ = {
@@ -144,6 +145,11 @@
 		CCADF27D1485022300B20769 = {
 			isa = PBXGroup;
 			children = (
+				CC3C4AD51487A51C007FF6BA /* libz.1.2.5.dylib */,
+				CC3C4AD31487A50A007FF6BA /* MobileCoreServices.framework */,
+				CC3C4AD11487A503007FF6BA /* SystemConfiguration.framework */,
+				CC3C4ACF1487A4F9007FF6BA /* CFNetwork.framework */,
+				CC3C4ACC1487A4D5007FF6BA /* libxml2.2.7.3.dylib */,
 				CCADF2B014850CD500B20769 /* Dependencies */,
 				CCADF2AC1485023700B20769 /* Fundament */,
 				CCADF2921485022300B20769 /* FundamentTest */,
@@ -305,7 +311,6 @@
 				CC6A191C14866DCD006FFCF5 /* ASIHTTPRequest.m in Sources */,
 				CC6A191D14866DCD006FFCF5 /* ASIInputStream.m in Sources */,
 				CC6A191E14866DCD006FFCF5 /* ASINetworkQueue.m in Sources */,
-				CC6A191F14866DCD006FFCF5 /* ASIWebPageRequest.m in Sources */,
 				CC6A192314866DF0006FFCF5 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
