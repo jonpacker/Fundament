@@ -236,9 +236,14 @@ static Fundament* sharedFundament = nil;
   NSTimer* timer = [_timers objectForKey:key];
   
   NSMutableDictionary* hibernationData = [NSMutableDictionary dictionaryWithCapacity:3];
+  
   [hibernationData setObject:[NSNumber numberWithDouble:timer.timeInterval] forKey:@"timeInterval"];
   [hibernationData setObject:timer.userInfo forKey:@"userInfo"];
+  
+  [timer invalidate];
   [hibernationData setObject:timer.fireDate forKey:@"fireDate"];
+  
+  FundamentLog(2, @"Hibernated with most recent fireDate: %@", timer.fireDate);
   
   [timer invalidate];
   
@@ -256,14 +261,15 @@ static Fundament* sharedFundament = nil;
   NSTimeInterval timeInterval = [[hibernatingTimer objectForKey:@"timeInterval"] doubleValue];
   NSDictionary* userInfo = [hibernatingTimer objectForKey:@"userInfo"];
   
-  BOOL shouldFire = -[fireDate timeIntervalSinceNow] > timeInterval;
+  // This is broken - fireDate does not work as I am expecting.
+  // BOOL shouldFire = -[fireDate timeIntervalSinceNow] > timeInterval;
   
   NSTimer* awokenTimer = [self timerWithUpdateInterval:timeInterval userInfo:userInfo];
   [_timers setObject:awokenTimer forKey:key];
   
-  if (shouldFire) {
+  //if (shouldFire) {
     [awokenTimer fire];
-  }
+  //}
 }
 
 - (void) invalidateTimers {
