@@ -25,11 +25,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [$Fundament addDataSource:^(FundamentSuccessBlock s){
-    NSLog(@"datasource called");
-    s(@"<Data>");
-  } withUpdateInterval:10 forKey:@"dskey"];
-  [$Fundament addObserverForKey:@"dskey" withBlock:^(id data) {
+  [$Fundament addURLDataSource:[NSURL URLWithString:@"http://www.jonpacker.com/kaffe.json"] withResponseType:FundamentResponseTypeJSON updateInterval:10 forKey:@"kaffe"];
+  [$Fundament addObserverForKey:@"kaffe" withBlock:^(id data) {
     NSLog(@"Listener called with data - %@", data);
   }];
   

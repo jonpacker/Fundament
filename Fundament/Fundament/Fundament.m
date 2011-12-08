@@ -37,6 +37,10 @@ static inline void FundamentLog(UInt8 level, NSString* format, ...) {
 #define FundamentStatusKey @"status"
 #define FundamentKeyKey @"key"
 
+#pragma mark - Internal Typedefs
+
+typedef id (^FundamentParserBlock)(ASIHTTPRequest*);
+
 #pragma mark - UUID Generation
 
 static NSString* FundamentCreateUUID() {
@@ -78,6 +82,16 @@ static NSString* FundamentCreateUUID() {
 
 @end
 
+#pragma mark - Parsers
+
+#define FundamentParserJSON ^(ASIHTTPRequest* request) { return [request.responseData objectFromJSONData]; }
+#define FundamentParserString ^(ASIHTTPRequest* request) { return request.responseString; }
+#define FundamentParserData ^(ASIHTTPRequest* request) { return request.responseData; }
+#define FundamentParserPlist ^(ASIHTTPRequest* request) { NSError* error; \
+  return [NSPropertyListSerialization propertyListWithData:request.responseData \
+                                                   options:NSPropertyListImmutable format:NULL error:&error]; }
+#define FundamentParserImage ^(ASIHTTPRequest* request) { return [UIImage imageWithData:request.responseData]; }
+
 #pragma mark - Private Methods
 
 @interface Fundament( PrivateMethods )
@@ -99,9 +113,8 @@ static NSString* FundamentCreateUUID() {
 - (NSTimer *) timerForDataSource:(FundamentDataSourceBlock)dataSource forKey:(NSString *)key 
               withUpdateInterval:(NSTimeInterval)updateInterval;
 
-// Data source creator for a JSON data source
-- (void) addJSONDataSource:(NSURL *)dataSource withUpdateInterval:(NSTimeInterval)updateInterval 
-                    forKey:(NSString *)key;
+- (void) addWebDataSource:(NSURL *)dataSource withParserBlock:(FundamentParserBlock)parser 
+            updateInterval:(NSTimeInterval)updateInterval forKey:(NSString *)key;
 
 // Called when a timer fires, delegates the call off to where it should go.
 - (void) timerFired:(NSTimer *)timer;
@@ -128,6 +141,19 @@ static NSString* FundamentCreateUUID() {
                       observerId:(NSString *)observerId 
                  withNamespacing:(BOOL)namespacing 
                      overwriting:(BOOL)overwriting;
+
+
+// Invalidate all timers
+- (void) invalidateTimers;
+
+// Revalidate all timers
+- (void) revalidateTimers;
+
+// Create a timer
+- (NSTimer *) timerWithUpdateInterval:(NSTimeInterval)updateInterval userInfo:(NSDictionary *)userInfo;
+
+// Return true if the timer is beyond it's fire-by date.
+- (BOOL) timerShouldFire:(NSTimer *)timer;
 
 @end
 
@@ -194,13 +220,46 @@ static Fundament* sharedFundament = nil;
 
 - (void) applicationWillEnterForeground:(NSNotification *)notification {
   FundamentLog(2, @"Application Will Enter Foreground");
+  
+  [self invalidateTimers];
 }
 
 - (void) applicationDidEnterBackground:(NSNotification *)notification {
   FundamentLog(2, @"Application Did Enter Background");
+  
+  [self revalidateTimers];
 }
 
 #pragma mark - Timers
+
+- (void) invalidateTimers {
+  for (NSTimer* timer in _timers.allValues) {
+    [timer invalidate];
+  }
+}
+
+- (void) revalidateTimers {
+  for (NSString* key in _timers.allKeys) {
+    NSTimer* currentTimer = [_timers objectForKey:key];
+    
+    if (currentTimer.isValid) {
+      continue;
+    }
+    
+    BOOL shouldFire = [self timerShouldFire:currentTimer];
+    
+    NSTimer* newTimer = [self timerWithUpdateInterval:currentTimer.timeInterval userInfo:currentTimer.userInfo];
+    [_timers setObject:newTimer forKey:key];
+    
+    if (shouldFire) {
+      [newTimer fire];
+    }
+  }
+}
+
+- (BOOL) timerShouldFire:(NSTimer *)timer {
+  return -[timer.fireDate timeIntervalSinceNow] > timer.timeInterval;
+}
 
 - (NSTimeInterval) defaultUpdateInterval {
   return _defaultUpdateInterval > 0 ? _defaultUpdateInterval : FundamentDefaultUpdateDuration;
@@ -226,6 +285,10 @@ static Fundament* sharedFundament = nil;
   [userInfo setObject:[NSNumber numberWithInt:FundamentTimerStatusIdle] forKey:FundamentStatusKey];
   [userInfo setObject:[key copy] forKey:FundamentKeyKey];
   
+  return [self timerWithUpdateInterval:updateInterval userInfo:userInfo];
+}
+
+- (NSTimer *) timerWithUpdateInterval:(NSTimeInterval)updateInterval userInfo:(NSDictionary *)userInfo {
   return [NSTimer scheduledTimerWithTimeInterval:updateInterval target:self selector:@selector(timerFired:) 
                                         userInfo:userInfo repeats:YES];
 }
@@ -240,7 +303,9 @@ static Fundament* sharedFundament = nil;
   FundamentDataSourceBlock dataSource = [info objectForKey:FundamentDataSourceKey];
   FundamentSuccessBlock success = ^(id data) {
     NSDictionary* listeners = [info objectForKey:FundamentListenersKey];
+    NSInteger listenerCount = 0;
     for (FundamentListener* listener in listeners.allValues) {
+      FundamentLog(2, @"Calling listener %d for %@", listenerCount++, [info objectForKey:FundamentKeyKey]);
       [listener callWithData:data];
     }
     
@@ -277,13 +342,15 @@ static Fundament* sharedFundament = nil;
                       observerId:(NSString *)observerId 
                  withNamespacing:(BOOL)namespacing 
                      overwriting:(BOOL)overwriting {
-  NSString* finalObserverId = !namespacing ? [key stringByAppendingString:observerId] : observerId;
+  NSString* finalObserverId = namespacing ? [NSString stringWithFormat:@"%@.%@", key, observerId] : observerId;
   
   // If there's a conflict, remove it (or, if the user doesn't want to overwrite, return)
   if ([self removeObserver:finalObserverId dryRun:!overwriting]) return nil;
   
   NSMutableDictionary* keyListeners = [self observersForKey:key];
   [keyListeners setObject:listener forKey:finalObserverId];
+  
+  FundamentLog(2, @"Added listener %@ for %@", finalObserverId, key);
   
   return finalObserverId;
 }
@@ -421,7 +488,7 @@ static Fundament* sharedFundament = nil;
 #pragma mark Existing Info
 
 - (NSMutableDictionary *) infoForDataSourceWithKey:(NSString *)key {
-  NSTimer* timer = [_timers objectForKey:@"key"];
+  NSTimer* timer = [_timers objectForKey:key];
   return timer ? (NSMutableDictionary *) timer.userInfo : nil;
 }
 
@@ -455,26 +522,39 @@ static Fundament* sharedFundament = nil;
                    forKey:(NSString *)key {
   switch (responseType) {
     case FundamentResponseTypeJSON: {
-      [self addJSONDataSource:dataSource withUpdateInterval:updateInterval forKey:key];
+      [self addWebDataSource:dataSource withParserBlock:FundamentParserJSON updateInterval:updateInterval forKey:key];
     } break;
-    default: NSAssert(NO, @"Tried to add an unsupported responseType - %@", responseType);
+    case FundamentResponseTypeData: {
+      [self addWebDataSource:dataSource withParserBlock:FundamentParserData updateInterval:updateInterval forKey:key];
+    } break;
+    case FundamentResponseTypeImage: {
+      [self addWebDataSource:dataSource withParserBlock:FundamentParserImage updateInterval:updateInterval forKey:key];
+    } break;
+    case FundamentResponseTypePlist:  {
+      [self addWebDataSource:dataSource withParserBlock:FundamentParserPlist updateInterval:updateInterval forKey:key];
+    } break;
+    case FundamentResponseTypeString: {
+      [self addWebDataSource:dataSource withParserBlock:FundamentParserString updateInterval:updateInterval forKey:key];
+    } break;
+    default: NSAssert(NO, @"Tried to add an unsupported responseType - %d", responseType);
   }
 }
 
-# pragma mark JSON
-
-- (void) addJSONDataSource:(NSURL *)dataSource withUpdateInterval:(NSTimeInterval)updateInterval 
-                    forKey:(NSString *)key {
+- (void) addWebDataSource:(NSURL *)dataSource withParserBlock:(FundamentParserBlock)parser 
+                               updateInterval:(NSTimeInterval)updateInterval forKey:(NSString *)key {
   FundamentDataSourceBlock dataSourceBlock = ^(FundamentSuccessBlock success) {
-    __block ASIHTTPRequest* request = [[ASIHTTPRequest alloc] initWithURL:dataSource];
+    __block ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:dataSource];
     [request setCompletionBlock:^{
-      success([request.responseData objectFromJSONData]);
+      FundamentLog(2, @"Got to Web Data Source Completion block for key - %@", key);
+      success(parser(request));
     }];
     [request setFailedBlock:^{
+      FundamentLog(1, @"Web Data Source Error - %@", request.error);
       success(nil);
     }];
-    [[request autorelease] startAsynchronous];
+    [request startAsynchronous];
   };
+  
   [self addDataSource:dataSourceBlock withUpdateInterval:updateInterval forKey:key];
 }
 
