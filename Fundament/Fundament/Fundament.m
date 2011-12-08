@@ -221,39 +221,60 @@ static Fundament* sharedFundament = nil;
 - (void) applicationWillEnterForeground:(NSNotification *)notification {
   FundamentLog(2, @"Application Will Enter Foreground");
   
-  [self invalidateTimers];
+  [self revalidateTimers];
 }
 
 - (void) applicationDidEnterBackground:(NSNotification *)notification {
   FundamentLog(2, @"Application Did Enter Background");
   
-  [self revalidateTimers];
+  [self invalidateTimers];
 }
 
 #pragma mark - Timers
 
+- (void) hibernateTimerWithKey:(NSString *)key {
+  NSTimer* timer = [_timers objectForKey:key];
+  
+  NSMutableDictionary* hibernationData = [NSMutableDictionary dictionaryWithCapacity:3];
+  [hibernationData setObject:[NSNumber numberWithDouble:timer.timeInterval] forKey:@"timeInterval"];
+  [hibernationData setObject:timer.userInfo forKey:@"userInfo"];
+  [hibernationData setObject:timer.fireDate forKey:@"fireDate"];
+  
+  [timer invalidate];
+  
+  [_timers setObject:hibernationData forKey:key];
+}
+
+- (void) awakeTimerWithKeyFromHibernation:(NSString *)key {
+  NSDictionary* hibernatingTimer = [_timers objectForKey:key];
+  
+  if (![hibernatingTimer isKindOfClass:[NSDictionary class]]) { // not hibernating or something's wrong
+    return;
+  }
+  
+  NSDate* fireDate = [hibernatingTimer objectForKey:@"fireDate"];
+  NSTimeInterval timeInterval = [[hibernatingTimer objectForKey:@"timeInterval"] doubleValue];
+  NSDictionary* userInfo = [hibernatingTimer objectForKey:@"userInfo"];
+  
+  BOOL shouldFire = -[fireDate timeIntervalSinceNow] > timeInterval;
+  
+  NSTimer* awokenTimer = [self timerWithUpdateInterval:timeInterval userInfo:userInfo];
+  [_timers setObject:awokenTimer forKey:key];
+  
+  if (shouldFire) {
+    [awokenTimer fire];
+  }
+}
+
 - (void) invalidateTimers {
-  for (NSTimer* timer in _timers.allValues) {
-    [timer invalidate];
+  for (NSString* key in _timers.allKeys) {
+    [self hibernateTimerWithKey:key];
   }
 }
 
 - (void) revalidateTimers {
   for (NSString* key in _timers.allKeys) {
-    NSTimer* currentTimer = [_timers objectForKey:key];
-    
-    if (currentTimer.isValid) {
-      continue;
-    }
-    
-    BOOL shouldFire = [self timerShouldFire:currentTimer];
-    
-    NSTimer* newTimer = [self timerWithUpdateInterval:currentTimer.timeInterval userInfo:currentTimer.userInfo];
-    [_timers setObject:newTimer forKey:key];
-    
-    if (shouldFire) {
-      [newTimer fire];
-    }
+    [self awakeTimerWithKeyFromHibernation:key];
   }
 }
 
@@ -543,6 +564,7 @@ static Fundament* sharedFundament = nil;
 - (void) addWebDataSource:(NSURL *)dataSource withParserBlock:(FundamentParserBlock)parser 
                                updateInterval:(NSTimeInterval)updateInterval forKey:(NSString *)key {
   FundamentDataSourceBlock dataSourceBlock = ^(FundamentSuccessBlock success) {
+    FundamentLog(2, @"Requesting DataSource - %@", dataSource);
     __block ASIHTTPRequest* request = [ASIHTTPRequest requestWithURL:dataSource];
     [request setCompletionBlock:^{
       FundamentLog(2, @"Got to Web Data Source Completion block for key - %@", key);

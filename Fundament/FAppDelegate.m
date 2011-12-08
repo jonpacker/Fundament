@@ -27,7 +27,7 @@
 {
   [$Fundament addURLDataSource:[NSURL URLWithString:@"http://www.jonpacker.com/kaffe.json"] withResponseType:FundamentResponseTypeJSON updateInterval:10 forKey:@"kaffe"];
   [$Fundament addObserverForKey:@"kaffe" withBlock:^(id data) {
-    NSLog(@"Listener called with data - %@", data);
+    NSLog(@"Listener called with data size %d", [data count]);
   }];
   
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
